@@ -1,12 +1,18 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Ionic Blank
+      DSN NOW
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+<ion-content color="dark">
+  <ion-item-group *ngFor="let site of sites" color="dark">
+    <ion-item-divider color="medium">{{site.$.friendlyName}}</ion-item-divider>
+    <ion-list *ngFor="let dish of site.dish">
+      <ion-item (click)="goDishDetails(dish)" detail=true color="dark">
+        <ion-label >{{dish.$.friendlyName}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-item-group>
 </ion-content>

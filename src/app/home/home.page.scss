@@ -1,1 +1,11 @@
+ion-item {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --detail-icon-color: #fff;
+    --detail-icon-opacity: .75;
+}
 
+.list-md, .list-ios {
+    padding-top: 0;
+    padding-bottom: 0;
+}
