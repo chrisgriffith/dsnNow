@@ -3,6 +3,9 @@ export class Station {
     public name: String;  // gdscc
     public timeUTC: Number; // 1548868060791
     public timeZoneOffset: Number; // -28800000
+    public type?: String;
+    public latitude?: Number;
+    public longitude?: Number;
 
     constructor() {
          this.friendlyName = '';
