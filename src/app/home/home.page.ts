@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { parseString } from 'xml2js';
+import { DsnDataService } from '../services/dsn-data.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,8 @@ export class HomePage {
   private sites: Array<any>;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private dsn: DsnDataService
   ) {
     this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).subscribe( (data) => {
       // console.log(data); // XML
@@ -24,16 +26,18 @@ export class HomePage {
       });
     });
 
-    this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text'}).subscribe( (data) => {
+    this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).subscribe( (data) => {
        // console.log(data); // XML
        parseString(data, { explicitArray: false }, (error, result) => {
         if (error) {
           throw new Error(error);
         } else {
-           console.log(result); // JSON
+           // console.log(result); // JSON
         }
       });
     });
+
+    this.dsn.fetchData();
   }
 
   goDishDetails(dish) {}
