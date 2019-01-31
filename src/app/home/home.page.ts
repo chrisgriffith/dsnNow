@@ -30,7 +30,7 @@ export class HomePage {
         if (error) {
           throw new Error(error);
         } else {
-          // console.log(result); // JSON
+           console.log(result); // JSON
         }
       });
     });
