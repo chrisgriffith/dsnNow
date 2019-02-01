@@ -6,11 +6,14 @@ import { Dish } from '../interfaces/dish';
 import { Target } from '../interfaces/target';
 import { DownSignal } from '../interfaces/down-signal';
 import { UpSignal } from '../interfaces/up-signal';
+import { Observable, interval, of, concat } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DsnDataService {
+  private sites: Array<any>; // TYPE
   private stations: Array<Station> = [];
   private dishes: Array<Dish> = [];
 
@@ -18,18 +21,62 @@ export class DsnDataService {
     private http: HttpClient
   ) { }
 
-  fetchData() {
-    this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).subscribe((data) => {
-      parseString(data, { explicitArray: false }, (error, result) => {
-        if (error) {
-          throw new Error(error);
-        } else {
-          this.parseStations(result);
-          this.parseDishes(result);
-        }
-      });
-    });
+  loadConfig(): Observable<String> {
+    return this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).pipe(
+      map(res => {
+        parseString(res, { explicitArray: false }, (error, result) => {
+          if (error) {
+            throw new Error(error);
+          } else {
+            this.sites = result.config.sites.site;  // To clean up parsing
+            console.log('sites', this.sites);
+          }
+        });
+        return res;
+      })
+    );
   }
+
+  fetchData(): Observable<any> {
+    const configLoader: Observable<String> = this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).pipe(
+      map(res => {
+        parseString(res, { explicitArray: false }, (error, result) => {
+          if (error) {
+            throw new Error(error);
+          } else {
+            this.sites = result.config.sites.site;  // To clean up parsing
+            console.log('sites', this.sites);
+          }
+        });
+        return res;
+      })
+    );
+    const dataRefreshTimer: Observable<Number> = interval(5000);
+
+    const dsnData: Observable<String> = this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).pipe(
+      map(res => {
+        parseString(res, { explicitArray: false }, (error, result) => {
+          if (error) {
+            throw new Error(error);
+          } else {
+            this.parseStations(result);
+            this.parseDishes(result);
+          }
+        });
+        return res;
+      })
+    );
+
+    return concat(configLoader, dataRefreshTimer, dsnData);
+  }
+
+  getSites() {
+    return this.sites;
+  }
+
+  /////
+  // Data cleanup
+  /////
 
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
@@ -41,7 +88,7 @@ export class DsnDataService {
       dsnStation.timeZoneOffset = Number(station.$.timeZoneOffset);
       this.stations.push(dsnStation);
     });
-    console.log(this.stations);
+    // console.log(this.stations);
   }
 
   parseDishes(theData) {
@@ -69,7 +116,7 @@ export class DsnDataService {
       }
       this.dishes.push(dsnDish);
     });
-    console.log(this.dishes);
+    // console.log(this.dishes);
   }
 
   parseTarget(theData): Array<Target> {
