@@ -1,36 +1,105 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { parseString } from 'xml2js';
+import { Site } from '../interfaces/site';
 import { Station } from '../interfaces/station';
 import { Dish } from '../interfaces/dish';
+import { SpaceCraft } from '../interfaces/spacecraft';
 import { Target } from '../interfaces/target';
 import { DownSignal } from '../interfaces/down-signal';
 import { UpSignal } from '../interfaces/up-signal';
+import { Observable, interval, of, concat } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DsnDataService {
+  private sites: Array<any>; // TYPE
   private stations: Array<Station> = [];
   private dishes: Array<Dish> = [];
+  private _spacecraft: Array<SpaceCraft> = [];
 
   constructor(
     private http: HttpClient
   ) { }
 
-  fetchData() {
-    this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).subscribe((data) => {
-      parseString(data, { explicitArray: false }, (error, result) => {
-        if (error) {
-          throw new Error(error);
-        } else {
-          this.parseStations(result);
-          this.parseDishes(result);
-        }
+  fetchData(): Observable<any> {
+    const configLoader: Observable<String> = this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).pipe(
+      map(res => {
+        parseString(res, { explicitArray: false }, (error, result) => {
+          if (error) {
+            throw new Error(error);
+          } else {
+            this.sites = result.config.sites.site;  // To clean up parsing
+            // console.log('sites', this.sites);
+            this.parseSites(this.sites);
+            this.parseSpaceCraft(result.config.spacecraftMap.spacecraft);
+          }
+        });
+        return res;
+      })
+    );
+    const dataRefreshTimer: Observable<Number> = interval(5000);
+
+    const dsnData: Observable<String> = this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).pipe(
+      map(res => {
+        parseString(res, { explicitArray: false }, (error, result) => {
+          if (error) {
+            throw new Error(error);
+          } else {
+            this.parseStations(result);
+            this.parseDishes(result);
+          }
+        });
+        return res;
+      })
+    );
+
+    return concat(configLoader, dataRefreshTimer, dsnData);
+  }
+
+  getSites() {
+    return this.sites;
+  }
+
+  /////
+  // Data cleanup
+  /////
+
+  parseSites(theData) {
+    theData.forEach(site => {
+      const dsnSite: Site = new Site();
+      dsnSite.friendlyName = site.$.friendlyName;
+      dsnSite.name = site.$.name;
+      dsnSite.latitude = Number(site.$.latitude);
+      dsnSite.longitude = Number(site.$.longitude);
+      const theDishes: Array<any> = site.dish;
+      theDishes.forEach(theDish => {
+        const dish: Dish = new Dish();
+        dish.friendlyName = theDish.$.friendlyName;
+        dish.name = theDish.$.name;
+        dish.type = theDish.$.type;
+        dsnSite.dishes.push(dish);
       });
+      this.stations.push(dsnSite);
     });
   }
 
+  parseSpaceCraft(theData) {
+    theData.forEach(theSpacecraft => {
+      const spacecraft: SpaceCraft = new SpaceCraft();
+      spacecraft.friendlyName = theSpacecraft.$.friendlyName;
+      spacecraft.name = theSpacecraft.$.name;
+      spacecraft.explorerName = theSpacecraft.$.explorerName;
+      spacecraft.thumbnail = Boolean(theSpacecraft.$.thumbnail);
+      this._spacecraft.push(spacecraft);
+    });
+  }
+
+  ////
+  // Refactor to site
+  ////
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
       const dsnStation: Station = new Station();
@@ -41,9 +110,11 @@ export class DsnDataService {
       dsnStation.timeZoneOffset = Number(station.$.timeZoneOffset);
       this.stations.push(dsnStation);
     });
-    console.log(this.stations);
+    // console.log(this.stations);
   }
-
+  ////
+  // Refactor to site->dish
+  ////
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
       const dsnDish: Dish = new Dish();
@@ -69,7 +140,7 @@ export class DsnDataService {
       }
       this.dishes.push(dsnDish);
     });
-    console.log(this.dishes);
+    // console.log(this.dishes);
   }
 
   parseTarget(theData): Array<Target> {
