@@ -10,11 +10,13 @@ export class Dish {
     public isDDOR: Boolean; // "false"
     public isMSPA: Boolean; // "false"
     public name: String; // "DSS24"
+    public friendlyName: String; // DSS 24
     public updated: String; // "2019-01-30T15:56:45.045Z"
     public windSpeed: Number; // "0.00"
     public downSignal: Array<DownSignal>;
     public upSignal: UpSignal;
     public target: Array<Target>;
+    public type: String;
 
     constructor () {
         this.azimuthAngle = 0;
@@ -24,10 +26,12 @@ export class Dish {
         this.isDDOR = false;
         this.isMSPA = false;
         this.name = '';
+        this.friendlyName = '';
         this.updated = '';
         this.windSpeed = 0;
         this.downSignal = [];
         this.upSignal = new UpSignal();
         this.target = [];
+        this.type = '';
     }
 }

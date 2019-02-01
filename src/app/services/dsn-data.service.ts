@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { parseString } from 'xml2js';
+import { Site } from '../interfaces/site';
 import { Station } from '../interfaces/station';
 import { Dish } from '../interfaces/dish';
+import { SpaceCraft } from '../interfaces/spacecraft';
 import { Target } from '../interfaces/target';
 import { DownSignal } from '../interfaces/down-signal';
 import { UpSignal } from '../interfaces/up-signal';
@@ -16,26 +18,11 @@ export class DsnDataService {
   private sites: Array<any>; // TYPE
   private stations: Array<Station> = [];
   private dishes: Array<Dish> = [];
+  private _spacecraft: Array<SpaceCraft> = [];
 
   constructor(
     private http: HttpClient
   ) { }
-
-  loadConfig(): Observable<String> {
-    return this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).pipe(
-      map(res => {
-        parseString(res, { explicitArray: false }, (error, result) => {
-          if (error) {
-            throw new Error(error);
-          } else {
-            this.sites = result.config.sites.site;  // To clean up parsing
-            console.log('sites', this.sites);
-          }
-        });
-        return res;
-      })
-    );
-  }
 
   fetchData(): Observable<any> {
     const configLoader: Observable<String> = this.http.get('./assets/dsnconfig.xml', { responseType: 'text' }).pipe(
@@ -45,7 +32,9 @@ export class DsnDataService {
             throw new Error(error);
           } else {
             this.sites = result.config.sites.site;  // To clean up parsing
-            console.log('sites', this.sites);
+            // console.log('sites', this.sites);
+            this.parseSites(this.sites);
+            this.parseSpaceCraft(result.config.spacecraftMap.spacecraft);
           }
         });
         return res;
@@ -78,6 +67,39 @@ export class DsnDataService {
   // Data cleanup
   /////
 
+  parseSites(theData) {
+    theData.forEach(site => {
+      const dsnSite: Site = new Site();
+      dsnSite.friendlyName = site.$.friendlyName;
+      dsnSite.name = site.$.name;
+      dsnSite.latitude = Number(site.$.latitude);
+      dsnSite.longitude = Number(site.$.longitude);
+      const theDishes: Array<any> = site.dish;
+      theDishes.forEach(theDish => {
+        const dish: Dish = new Dish();
+        dish.friendlyName = theDish.$.friendlyName;
+        dish.name = theDish.$.name;
+        dish.type = theDish.$.type;
+        dsnSite.dishes.push(dish);
+      });
+      this.stations.push(dsnSite);
+    });
+  }
+
+  parseSpaceCraft(theData) {
+    theData.forEach(theSpacecraft => {
+      const spacecraft: SpaceCraft = new SpaceCraft();
+      spacecraft.friendlyName = theSpacecraft.$.friendlyName;
+      spacecraft.name = theSpacecraft.$.name;
+      spacecraft.explorerName = theSpacecraft.$.explorerName;
+      spacecraft.thumbnail = Boolean(theSpacecraft.$.thumbnail);
+      this._spacecraft.push(spacecraft);
+    });
+  }
+
+  ////
+  // Refactor to site
+  ////
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
       const dsnStation: Station = new Station();
@@ -90,7 +112,9 @@ export class DsnDataService {
     });
     // console.log(this.stations);
   }
-
+  ////
+  // Refactor to site->dish
+  ////
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
       const dsnDish: Dish = new Dish();
