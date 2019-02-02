@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DsnDataService {
-  private sites: Array<any>; // TYPE
-  private stations: Array<Station> = [];
+  private sites: Array<Site> = [];
+  // private stations: Array<Station> = [];
   private dishes: Array<Dish> = [];
   private _spacecraft: Array<SpaceCraft> = [];
 
@@ -31,9 +31,7 @@ export class DsnDataService {
           if (error) {
             throw new Error(error);
           } else {
-            this.sites = result.config.sites.site;  // To clean up parsing
-            // console.log('sites', this.sites);
-            this.parseSites(this.sites);
+            this.parseSites(result.config.sites.site);
             this.parseSpaceCraft(result.config.spacecraftMap.spacecraft);
           }
         });
@@ -55,8 +53,8 @@ export class DsnDataService {
         return res;
       })
     );
-
-    return concat(configLoader, dataRefreshTimer, dsnData);
+    return concat(configLoader, dsnData);
+    // return concat(configLoader, dataRefreshTimer, dsnData);
   }
 
   getSites() {
@@ -67,13 +65,14 @@ export class DsnDataService {
   // Data cleanup
   /////
 
-  parseSites(theData) {
+  parseSites(theData: Array<any>) {
     theData.forEach(site => {
       const dsnSite: Site = new Site();
       dsnSite.friendlyName = site.$.friendlyName;
       dsnSite.name = site.$.name;
       dsnSite.latitude = Number(site.$.latitude);
       dsnSite.longitude = Number(site.$.longitude);
+
       const theDishes: Array<any> = site.dish;
       theDishes.forEach(theDish => {
         const dish: Dish = new Dish();
@@ -82,13 +81,15 @@ export class DsnDataService {
         dish.type = theDish.$.type;
         dsnSite.dishes.push(dish);
       });
-      this.stations.push(dsnSite);
+      this.sites.push(dsnSite);
+      // this.stations.push(dsnSite);
     });
   }
 
-  parseSpaceCraft(theData) {
+  parseSpaceCraft(theData: Array<any>) {
     theData.forEach(theSpacecraft => {
       const spacecraft: SpaceCraft = new SpaceCraft();
+
       spacecraft.friendlyName = theSpacecraft.$.friendlyName;
       spacecraft.name = theSpacecraft.$.name;
       spacecraft.explorerName = theSpacecraft.$.explorerName;
@@ -97,48 +98,47 @@ export class DsnDataService {
     });
   }
 
-  ////
-  // Refactor to site
-  ////
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
-      const dsnStation: Station = new Station();
+      const theStation = this.sites.filter( site => site.name === station.$.name );
 
-      dsnStation.friendlyName = station.$.friendlyName;
-      dsnStation.name = station.$.name;
-      dsnStation.timeUTC = Number(station.$.timeUTC);
-      dsnStation.timeZoneOffset = Number(station.$.timeZoneOffset);
-      this.stations.push(dsnStation);
+      theStation[0].timeUTC = Number(station.$.timeUTC);
+      theStation[0].timeZoneOffset = Number(station.$.timeZoneOffset);
     });
-    // console.log(this.stations);
   }
+
   ////
   // Refactor to site->dish
   ////
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
-      const dsnDish: Dish = new Dish();
 
-      dsnDish.azimuthAngle = Number(dish.$.azimuthAngle);
-      dsnDish.created = dish.$.created;
-      dsnDish.elevationAngle = Number(dish.$.elevationAngle);
-      dsnDish.isArray = Boolean(dish.$.isArray);
-      dsnDish.isDDOR = Boolean(dish.$.isDDOR);
-      dsnDish.isMSPA = Boolean(dish.$.isMSPA);
-      dsnDish.name = dish.$.name;
-      dsnDish.updated = dish.$.updated;
-      dsnDish.windSpeed = Number(dish.$.windSpeed);
+      this.sites.forEach( site => {
+        const dsnDish = site.dishes.filter( _theDish => _theDish.name === dish.$.name  )[0];
 
-      if (dish.target !== undefined) {
-        dsnDish.target = this.parseTarget(dish.target);
-      }
-      if (dish.downSignal !== undefined) {
-        dsnDish.downSignal = this.parseDownSignal(dish.downSignal);
-      }
-      if (dish.upSignal !== undefined) {
-        dsnDish.upSignal = this.parseUpSignal(dish.upSignal);
-      }
-      this.dishes.push(dsnDish);
+        if ( dsnDish !== undefined ) {
+          dsnDish.azimuthAngle = Number(dish.$.azimuthAngle);
+          dsnDish.created = dish.$.created;
+          dsnDish.elevationAngle = Number(dish.$.elevationAngle);
+          dsnDish.isArray = Boolean(dish.$.isArray);
+          dsnDish.isDDOR = Boolean(dish.$.isDDOR);
+          dsnDish.isMSPA = Boolean(dish.$.isMSPA);
+          dsnDish.name = dish.$.name;
+          dsnDish.updated = dish.$.updated;
+          dsnDish.windSpeed = Number(dish.$.windSpeed);
+
+          if (dish.target !== undefined) {
+            dsnDish.target = this.parseTarget(dish.target);
+          }
+          if (dish.downSignal !== undefined) {
+            dsnDish.downSignal = this.parseDownSignal(dish.downSignal);
+          }
+          if (dish.upSignal !== undefined) {
+            dsnDish.upSignal = this.parseUpSignal(dish.upSignal);
+          }
+          this.dishes.push(dsnDish);
+        }
+      });
     });
     // console.log(this.dishes);
   }

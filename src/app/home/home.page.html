@@ -8,10 +8,12 @@
 
 <ion-content color="dark">
   <ion-item-group *ngFor="let site of sites" color="dark">
-    <ion-item-divider color="medium">{{site.$.friendlyName}}</ion-item-divider>
-    <ion-list *ngFor="let dish of site.dish">
+    <ion-item-divider color="medium">{{site.friendlyName}}</ion-item-divider>
+    <ion-list *ngFor="let dish of site.dishes">
       <ion-item (click)="goDishDetails(dish)" detail=true color="dark">
-        <ion-label >{{dish.$.friendlyName}}</ion-label>
+        <ion-label>
+          {{dish.friendlyName}}
+        </ion-label>
       </ion-item>
     </ion-list>
   </ion-item-group>
