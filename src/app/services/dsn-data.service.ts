@@ -16,9 +16,8 @@ import { map } from 'rxjs/operators';
 })
 export class DsnDataService {
   private sites: Array<Site> = [];
-  // private stations: Array<Station> = [];
   private dishes: Array<Dish> = [];
-  private _spacecraft: Array<SpaceCraft> = [];
+  private spacecrafts: Array<SpaceCraft> = [];
 
   constructor(
     private http: HttpClient
@@ -39,8 +38,8 @@ export class DsnDataService {
       })
     );
     const dataRefreshTimer: Observable<Number> = interval(5000);
-
-    const dsnData: Observable<String> = this.http.get('https://eyes.nasa.gov/dsn/data/dsn.xml', { responseType: 'text' }).pipe(
+    const dataURL: string  = 'https://eyes.nasa.gov/dsn/data/dsn.xml?r=' + Math.floor(new Date().getTime() / 5000);
+    const dsnData: Observable<String> = this.http.get(dataURL, { responseType: 'text' }).pipe(
       map(res => {
         parseString(res, { explicitArray: false }, (error, result) => {
           if (error) {
@@ -59,6 +58,10 @@ export class DsnDataService {
 
   getSites() {
     return this.sites;
+  }
+
+  getSpacecrafts() {
+    return this.spacecrafts;
   }
 
   /////
@@ -94,13 +97,14 @@ export class DsnDataService {
       spacecraft.name = theSpacecraft.$.name;
       spacecraft.explorerName = theSpacecraft.$.explorerName;
       spacecraft.thumbnail = Boolean(theSpacecraft.$.thumbnail);
-      this._spacecraft.push(spacecraft);
+      this.spacecrafts.push(spacecraft);
     });
+    // console.log(this.spacecrafts);
   }
 
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
-      const theStation = this.sites.filter( site => site.name === station.$.name );
+      const theStation = this.sites.filter(site => site.name === station.$.name);
 
       theStation[0].timeUTC = Number(station.$.timeUTC);
       theStation[0].timeZoneOffset = Number(station.$.timeZoneOffset);
@@ -113,10 +117,10 @@ export class DsnDataService {
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
 
-      this.sites.forEach( site => {
-        const dsnDish = site.dishes.filter( _theDish => _theDish.name === dish.$.name  )[0];
+      this.sites.forEach(site => {
+        const dsnDish = site.dishes.filter(_theDish => _theDish.name === dish.$.name)[0];
 
-        if ( dsnDish !== undefined ) {
+        if (dsnDish !== undefined) {
           dsnDish.azimuthAngle = Number(dish.$.azimuthAngle);
           dsnDish.created = dish.$.created;
           dsnDish.elevationAngle = Number(dish.$.elevationAngle);
@@ -217,5 +221,26 @@ export class DsnDataService {
     theUpSignal.spacecraftId = Number(theData.$.spacecraftId);
 
     return theUpSignal;
+  }
+
+  translateTargetName(theTarget: Array<SpaceCraft>): String {
+    if (theTarget.length !== 0) {
+      let spaceCraftName: String = '';
+      theTarget.forEach(_target => {
+        const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => _target.name.toLowerCase() === _craft.name.toLowerCase());
+
+        if (theCraft !== undefined) {
+          theCraft.forEach(_craft => {
+            spaceCraftName += _craft.friendlyName + ' | ';
+          });
+        } else {
+          spaceCraftName = ' | ';
+        }
+      });
+      spaceCraftName = spaceCraftName.slice(0, -3);
+      return spaceCraftName;
+    } else {
+      return ' ';
+    }
   }
 }

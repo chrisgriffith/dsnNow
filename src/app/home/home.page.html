@@ -12,7 +12,8 @@
     <ion-list *ngFor="let dish of site.dishes">
       <ion-item (click)="goDishDetails(dish)" detail=true color="dark">
         <ion-label>
-          {{dish.friendlyName}}
+          <h2>{{dish.target | targetName }}</h2>
+          <p>{{dish.friendlyName}}</p>
         </ion-label>
       </ion-item>
     </ion-list>
