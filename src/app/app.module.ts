@@ -9,9 +9,11 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { RangePipe } from './pipes/range.pipe';
+import { RoundTripPipe } from './pipes/round-trip.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RangePipe, RoundTripPipe],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [

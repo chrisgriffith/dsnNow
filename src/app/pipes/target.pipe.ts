@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { SpaceCraft } from '../interfaces/spacecraft';
-import { DsnDataService } from '../services/dsn-data.service';
+import { DSNDataService } from '../services/dsn-data.service';
 
 @Pipe({
   name: 'targetName'
@@ -8,7 +8,7 @@ import { DsnDataService } from '../services/dsn-data.service';
 export class TargetPipe implements PipeTransform {
 
   constructor(
-    private dsn: DsnDataService
+    private dsn: DSNDataService
   ) { }
 
   transform(value: Array<SpaceCraft>, args?: any): any {

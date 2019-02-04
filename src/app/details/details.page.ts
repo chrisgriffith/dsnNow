@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DSNDataService } from '../services/dsn-data.service';
 
 @Component({
   selector: 'app-details',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private dsn: DSNDataService,
+  ) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    const dishName = this.route.snapshot.paramMap.get('dishName');
+    console.log(dishName);
+    this.dsn.getDish(dishName).subscribe( (data) => {
+      console.log(data);
+    });
   }
 
 }

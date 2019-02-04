@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DsnDataService } from '../services/dsn-data.service';
+import { Router } from '@angular/router';
+import { DSNDataService } from '../services/dsn-data.service';
 import { Site } from '../interfaces/site';
+import { Dish } from '../interfaces/dish';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,8 @@ export class HomePage implements OnInit {
   private sites: Array<Site>;
 
   constructor(
-    private dsn: DsnDataService,
+    private dsn: DSNDataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -22,5 +25,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  goDishDetails(dish) { }
+  goDishDetails(dish: Dish) {
+    this.router.navigateByUrl(`dish/${dish.name}`);
+  }
 }

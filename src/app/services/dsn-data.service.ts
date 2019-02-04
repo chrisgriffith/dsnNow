@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class DsnDataService {
+export class DSNDataService {
   private sites: Array<Site> = [];
   private dishes: Array<Dish> = [];
   private spacecrafts: Array<SpaceCraft> = [];
@@ -64,6 +64,11 @@ export class DsnDataService {
     return this.spacecrafts;
   }
 
+  getDish(theDishName: string): Observable<Dish> {
+    return of( this.dishes.filter( _theDish => _theDish.name === theDishName)[0] );
+    // return this.dishes.filter( _theDish => _theDish.name === theDishName)[0];
+  }
+
   /////
   // Data cleanup
   /////
@@ -111,14 +116,11 @@ export class DsnDataService {
     });
   }
 
-  ////
-  // Refactor to site->dish
-  ////
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
 
       this.sites.forEach(site => {
-        const dsnDish = site.dishes.filter(_theDish => _theDish.name === dish.$.name)[0];
+        const dsnDish = site.dishes.filter( _theDish => _theDish.name === dish.$.name)[0];
 
         if (dsnDish !== undefined) {
           dsnDish.azimuthAngle = Number(dish.$.azimuthAngle);
