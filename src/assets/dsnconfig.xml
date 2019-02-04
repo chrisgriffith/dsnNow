@@ -122,7 +122,7 @@
 		<spacecraft name="rd1" explorerName="" friendlyName="Red Dragon 1"></spacecraft>
 		<spacecraft name="rfc" explorerName="" friendlyName="Reference Frame Calibration"></spacecraft>
 		<spacecraft name="rose" explorerName="sc_rosetta" friendlyName="Rosetta" thumbnail="true"></spacecraft>
-		<spacecraft name="rp" explorerName="" friendlyName="Resource Prospector" link="https://www.nasa.gov/resource-prospector"></spacecraft>
+		<spacecraft name="rp" explorerName="" friendlyName="Resource Prospector"></spacecraft>
 		<spacecraft name="rsp" explorerName="" friendlyName="ExoMars Rover and Surface Platform"></spacecraft>
 		<spacecraft name="rsts" explorerName="" friendlyName="Resource System Time Sharing"></spacecraft>
 		<spacecraft name="sdu" explorerName="sc_stardust" friendlyName="Stardust"></spacecraft>
