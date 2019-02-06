@@ -3,10 +3,40 @@
       <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Details</ion-title>
+    <ion-title>{{dish?.friendlyName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content color="dark" padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>Name:</ion-col>
+      <ion-col>{{dish?.target[0].name}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+<ion-card>
+  <ion-card-header>ANTENNA</ion-card-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col>Name:</ion-col>
+        <ion-col>{{dish?.friendlyName}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>AZIMUTH:</ion-col>
+        <ion-col>{{dish?.azimuthAngle}} deg</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>ELEVATION:</ion-col>
+        <ion-col>{{dish?.elevationAngle}} deg</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>WIND SPEED:</ion-col>
+        <ion-col>{{dish?.windSpeed}} km/hr</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
 
 </ion-content>

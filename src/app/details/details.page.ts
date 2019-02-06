@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DSNDataService } from '../services/dsn-data.service';
+import { Dish } from '../interfaces/dish';
 
 @Component({
   selector: 'app-details',
@@ -8,6 +9,7 @@ import { DSNDataService } from '../services/dsn-data.service';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
+  private dish: Dish;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +24,7 @@ export class DetailsPage implements OnInit {
     console.log(dishName);
     this.dsn.getDish(dishName).subscribe( (data) => {
       console.log(data);
+      this.dish = data;
     });
   }
 

@@ -11,9 +11,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RangePipe } from './pipes/range.pipe';
 import { RoundTripPipe } from './pipes/round-trip.pipe';
+import { PowerPipe } from './pipes/power.pipe';
 
 @NgModule({
-  declarations: [AppComponent, RangePipe, RoundTripPipe],
+  declarations: [AppComponent, RangePipe, RoundTripPipe, PowerPipe],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
