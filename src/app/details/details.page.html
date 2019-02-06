@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-      <ion-buttons slot="start">
+    <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title>{{dish?.friendlyName}}</ion-title>
@@ -11,32 +11,100 @@
   <ion-grid>
     <ion-row>
       <ion-col>Name:</ion-col>
-      <ion-col>{{dish?.target[0].name}}</ion-col>
+      <ion-col>{{dish?.target | targetName}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Range:</ion-col>
+      <ion-col>{{dish?.target[0] | range}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Round-Trip Light Time:</ion-col>
+      <ion-col>{{dish?.target[0] | roundTrip}}</ion-col>
     </ion-row>
   </ion-grid>
 
-<ion-card>
-  <ion-card-header>ANTENNA</ion-card-header>
-  <ion-card-content>
-    <ion-grid>
-      <ion-row>
-        <ion-col>Name:</ion-col>
-        <ion-col>{{dish?.friendlyName}}</ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>AZIMUTH:</ion-col>
-        <ion-col>{{dish?.azimuthAngle}} deg</ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>ELEVATION:</ion-col>
-        <ion-col>{{dish?.elevationAngle}} deg</ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>WIND SPEED:</ion-col>
-        <ion-col>{{dish?.windSpeed}} km/hr</ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-content>
-</ion-card>
+  <ion-card color="light">
+    <ion-card-header>
+      <ion-card-title>ANTENNA</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Name:</ion-col>
+          <ion-col>{{dish?.friendlyName}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>AZIMUTH:</ion-col>
+          <ion-col>{{dish?.azimuthAngle}} deg</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>ELEVATION:</ion-col>
+          <ion-col>{{dish?.elevationAngle}} deg</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>WIND SPEED:</ion-col>
+          <ion-col>{{dish?.windSpeed}} km/hr</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Up Signal</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Source</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Type</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Data Rate</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Frequency</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Power Transmitted</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Down Signal</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Source</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Type</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Data Rate</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Frequency</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Power Received</ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

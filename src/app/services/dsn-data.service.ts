@@ -225,7 +225,7 @@ export class DSNDataService {
     return theUpSignal;
   }
 
-  translateTargetName(theTarget: Array<SpaceCraft>): String {
+  translateTargetName(theTarget: Array<SpaceCraft> | Array<Target> ): String {
     if (theTarget.length !== 0) {
       let spaceCraftName: String = '';
       theTarget.forEach(_target => {

@@ -3,14 +3,15 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TargetPipe } from '../pipes/target.pipe';
 import { HomePage } from './home.page';
+import { PipesModule} from '../pipes/pipes.modules';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     RouterModule.forChild([
       {
         path: '',
@@ -18,6 +19,6 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage, TargetPipe]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

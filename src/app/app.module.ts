@@ -9,14 +9,13 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { RangePipe } from './pipes/range.pipe';
-import { RoundTripPipe } from './pipes/round-trip.pipe';
-import { PowerPipe } from './pipes/power.pipe';
+import { PipesModule } from './pipes/pipes.modules';
+
 
 @NgModule({
-  declarations: [AppComponent, RangePipe, RoundTripPipe, PowerPipe],
+  declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, PipesModule],
   providers: [
     StatusBar,
     SplashScreen,
