@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PipesModule } from './pipes/pipes.modules';
 
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

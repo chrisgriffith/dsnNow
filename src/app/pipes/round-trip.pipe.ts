@@ -21,7 +21,6 @@ export class RoundTripPipe implements PipeTransform {
       } else {
         return ' >= 1 week';
       }
-
     } else {
       return '-';
     }

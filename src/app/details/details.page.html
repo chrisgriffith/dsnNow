@@ -3,23 +3,30 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{dish?.friendlyName}}</ion-title>
+    <!-- <ion-title>{{dish?.friendlyName}}</ion-title> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="dark" padding>
+<ion-content  padding>
+
+  <ion-segment (ionChange)="segmentChanged($event)" *ngIf="targets.length > 1" [(ngModel)]="targetIndex">
+    <ion-segment-button value="{{i}}" *ngFor="let craft of targets; index as i">
+      <ion-label>{{craft?.name}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-grid>
     <ion-row>
       <ion-col>Name:</ion-col>
-      <ion-col>{{dish?.target | targetName}}</ion-col>
+      <ion-col>{{target?.name | spacecraft}}</ion-col>
     </ion-row>
     <ion-row>
       <ion-col>Range:</ion-col>
-      <ion-col>{{dish?.target[0] | range}}</ion-col>
+      <ion-col>{{target | range}}</ion-col>
     </ion-row>
     <ion-row>
       <ion-col>Round-Trip Light Time:</ion-col>
-      <ion-col>{{dish?.target[0] | roundTrip}}</ion-col>
+      <ion-col>{{target | roundTrip}}</ion-col>
     </ion-row>
   </ion-grid>
 

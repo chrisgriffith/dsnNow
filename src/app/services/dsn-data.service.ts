@@ -38,7 +38,7 @@ export class DSNDataService {
       })
     );
     const dataRefreshTimer: Observable<Number> = interval(5000);
-    const dataURL: string  = 'https://eyes.nasa.gov/dsn/data/dsn.xml?r=' + Math.floor(new Date().getTime() / 5000);
+    const dataURL: string = 'https://eyes.nasa.gov/dsn/data/dsn.xml?r=' + Math.floor(new Date().getTime() / 5000);
     const dsnData: Observable<String> = this.http.get(dataURL, { responseType: 'text' }).pipe(
       map(res => {
         parseString(res, { explicitArray: false }, (error, result) => {
@@ -65,7 +65,7 @@ export class DSNDataService {
   }
 
   getDish(theDishName: string): Observable<Dish> {
-    return of( this.dishes.filter( _theDish => _theDish.name === theDishName)[0] );
+    return of(this.dishes.filter(_theDish => _theDish.name === theDishName)[0]);
     // return this.dishes.filter( _theDish => _theDish.name === theDishName)[0];
   }
 
@@ -120,7 +120,7 @@ export class DSNDataService {
     theData.dsn.dish.forEach(dish => {
 
       this.sites.forEach(site => {
-        const dsnDish = site.dishes.filter( _theDish => _theDish.name === dish.$.name)[0];
+        const dsnDish = site.dishes.filter(_theDish => _theDish.name === dish.$.name)[0];
 
         if (dsnDish !== undefined) {
           dsnDish.azimuthAngle = Number(dish.$.azimuthAngle);
@@ -225,10 +225,10 @@ export class DSNDataService {
     return theUpSignal;
   }
 
-  translateTargetName(theTarget: Array<SpaceCraft> | Array<Target> ): String {
+  translateTargetName(theTarget: Array<any> ): String {
     if (theTarget.length !== 0) {
       let spaceCraftName: String = '';
-      theTarget.forEach(_target => {
+      theTarget.forEach( _target => {
         const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => _target.name.toLowerCase() === _craft.name.toLowerCase());
 
         if (theCraft !== undefined) {
@@ -243,6 +243,15 @@ export class DSNDataService {
       return spaceCraftName;
     } else {
       return ' ';
+    }
+  }
+
+  getSpaceCraftName (theTargetName: string): String {
+    const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
+    if (theCraft.length !== 0) {
+      return theCraft[0].friendlyName;
+    } else {
+      return '';
     }
   }
 }
