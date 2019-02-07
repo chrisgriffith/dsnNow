@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  padding>
+<ion-content padding>
 
   <ion-segment (ionChange)="segmentChanged($event)" *ngIf="targets.length > 1" [(ngModel)]="targetIndex">
     <ion-segment-button value="{{i}}" *ngFor="let craft of targets; index as i">
@@ -30,7 +30,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card color="light">
+  <ion-card>
     <ion-card-header>
       <ion-card-title>ANTENNA</ion-card-title>
     </ion-card-header>
@@ -55,6 +55,7 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Up Signal</ion-card-title>
@@ -63,23 +64,23 @@
       <ion-grid>
         <ion-row>
           <ion-col>Source</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.spacecraft}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Type</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.signalType}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Data Rate</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.dataRate}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Frequency</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.frequency}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Power Transmitted</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.power}}</ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
@@ -93,23 +94,23 @@
       <ion-grid>
         <ion-row>
           <ion-col>Source</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.downSignal.spacecraft}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Type</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.downSignal.signalType}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Data Rate</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.downSignal.dataRate}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Frequency</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.downSignal.frequency}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Power Received</ion-col>
-          <ion-col></ion-col>
+          <ion-col>{{dish?.upSignal.power}}</ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
