@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <!-- <ion-title>{{dish?.friendlyName}}</ion-title> -->
+    <ion-title>{{dish?.friendlyName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -94,23 +94,23 @@
       <ion-grid>
         <ion-row>
           <ion-col>Source</ion-col>
-          <ion-col>{{dish?.downSignal.spacecraft}}</ion-col>
+          <ion-col>{{downSignal?.spacecraft}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Type</ion-col>
-          <ion-col>{{dish?.downSignal.signalType}}</ion-col>
+          <ion-col>{{downSignal?.signalType}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Data Rate</ion-col>
-          <ion-col>{{dish?.downSignal.dataRate}}</ion-col>
+          <ion-col>{{downSignal?.dataRate}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Frequency</ion-col>
-          <ion-col>{{dish?.downSignal.frequency}}</ion-col>
+          <ion-col>{{downSignal?.frequency}}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Power Received</ion-col>
-          <ion-col>{{dish?.upSignal.power}}</ion-col>
+          <ion-col>{{downSignal?.power}}</ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
