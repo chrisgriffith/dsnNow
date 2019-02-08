@@ -33,9 +33,10 @@ export class DetailsPage implements OnInit {
       this.dish = data;
       this.targets = this.dish.target;
       this.target = this.targets[this.targetIndex];
-
+      console.log(this.dish);
       this.downSignal = this.dish.downSignal
         .filter(_theDownSignal => _theDownSignal.spacecraft.toLowerCase() === this.target.name.toLowerCase())[0];
+        console.log(' this.downSignal',  this.downSignal);
    });
   }
 

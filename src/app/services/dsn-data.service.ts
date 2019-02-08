@@ -225,10 +225,10 @@ export class DSNDataService {
     return theUpSignal;
   }
 
-  translateTargetName(theTarget: Array<any> ): String {
+  translateTargetName(theTarget: Array<any>): String {
     if (theTarget.length !== 0) {
       let spaceCraftName: String = '';
-      theTarget.forEach( _target => {
+      theTarget.forEach(_target => {
         const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => _target.name.toLowerCase() === _craft.name.toLowerCase());
 
         if (theCraft !== undefined) {
@@ -246,10 +246,14 @@ export class DSNDataService {
     }
   }
 
-  getSpaceCraftName (theTargetName: string): String {
-    const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
-    if (theCraft.length !== 0) {
-      return theCraft[0].friendlyName;
+  getSpaceCraftName(theTargetName: string): String {
+    if (theTargetName !== null) {
+      const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
+      if (theCraft.length !== 0) {
+        return theCraft[0].friendlyName;
+      } else {
+        return '';
+      }
     } else {
       return '';
     }
