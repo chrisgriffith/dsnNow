@@ -13,7 +13,7 @@ import { DownSignal } from '../interfaces/down-signal';
 export class DetailsPage implements OnInit {
   private dish: Dish;
   private targets: Array<Target> = [];
-  private target: Target = {downlegRange: 0, id: 0, name: '', rtlt: 0, uplegRange: 0};
+  private target: Target = { downlegRange: 0, id: 0, name: '', rtlt: 0, uplegRange: 0 };
   private downSignal: DownSignal;
   private targetIndex = 0;
 
@@ -22,8 +22,7 @@ export class DetailsPage implements OnInit {
     private dsn: DSNDataService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   ////
   // Turn this into a route guard
@@ -34,15 +33,16 @@ export class DetailsPage implements OnInit {
       this.dish = data;
       this.targets = this.dish.target;
       this.target = this.targets[this.targetIndex];
-      this.downSignal = this.dish.downSignal[this.targetIndex]; // BUG ARRAY ORDER
-      console.log( this.downSignal);
-    });
+
+      this.downSignal = this.dish.downSignal
+        .filter(_theDownSignal => _theDownSignal.spacecraft.toLowerCase() === this.target.name.toLowerCase())[0];
+   });
   }
 
   segmentChanged($evt) {
     this.targetIndex = $evt.detail.value;
     this.target = this.targets[this.targetIndex];
-    this.downSignal = this.dish.downSignal[this.targetIndex]; // BUG ARRAY ORDER
-    console.log( this.downSignal);
+    this.downSignal = this.dish.downSignal
+      .filter(_theDownSignal => _theDownSignal.spacecraft.toLowerCase() === this.target.name.toLowerCase())[0];
   }
 }
