@@ -18,7 +18,6 @@ export class HomePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.dsn.fetchData().subscribe( () => {
       this.sites = this.dsn.getSites();
       console.log(this.sites);
