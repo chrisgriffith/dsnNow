@@ -11,9 +11,9 @@
     <ion-item-divider color="medium">{{site.friendlyName}}</ion-item-divider>
     <ion-list *ngFor="let dish of site.dishes">
       <ion-item (click)="goDishDetails(dish)" detail=true color="dark">
-          <ion-thumbnail slot="start">
-              <img src="assets/dish-34-blue.png">
-            </ion-thumbnail>
+        <ion-thumbnail slot="start">
+          <img src="assets/dish-34-blue.png">
+        </ion-thumbnail>
         <ion-label>
           <h2>{{dish.target | targetName }}</h2>
           <p>{{dish.friendlyName}}</p>
