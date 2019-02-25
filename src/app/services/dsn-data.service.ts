@@ -15,9 +15,10 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DSNDataService {
-  private sites: Array<Site> = [];
-  private dishes: Array<Dish> = [];
-  private spacecrafts: Array<SpaceCraft> = [];
+  private _sites: Array<Site> = [];
+  private _dishes: Array<Dish> = [];
+  private _targets: Array<Target> = [];
+  private _spacecrafts: Array<SpaceCraft> = [];
 
   constructor(
     private http: HttpClient
@@ -37,7 +38,9 @@ export class DSNDataService {
         return res;
       })
     );
+
     const dataRefreshTimer: Observable<Number> = interval(5000);
+
     const dataURL: string = 'https://eyes.nasa.gov/dsn/data/dsn.xml?r=' + Math.floor(new Date().getTime() / 5000);
     const dsnData: Observable<String> = this.http.get(dataURL, { responseType: 'text' }).pipe(
       map(res => {
@@ -45,8 +48,11 @@ export class DSNDataService {
           if (error) {
             throw new Error(error);
           } else {
+            this._targets = [];
             this.parseStations(result);
             this.parseDishes(result);
+            console.log('targets', this._targets);
+            console.log('_dishes', this._dishes);
           }
         });
         return res;
@@ -57,15 +63,15 @@ export class DSNDataService {
   }
 
   getSites() {
-    return this.sites;
+    return this._sites;
   }
 
   getSpacecrafts() {
-    return this.spacecrafts;
+    return this._spacecrafts;
   }
 
   getDish(theDishName: string): Observable<Dish> {
-    return of(this.dishes.filter(_theDish => _theDish.name === theDishName)[0]);
+    return of(this._dishes.filter(_theDish => _theDish.name === theDishName)[0]);
     // return this.dishes.filter( _theDish => _theDish.name === theDishName)[0];
   }
 
@@ -89,7 +95,7 @@ export class DSNDataService {
         dish.type = theDish.$.type;
         dsnSite.dishes.push(dish);
       });
-      this.sites.push(dsnSite);
+      this._sites.push(dsnSite);
       // this.stations.push(dsnSite);
     });
   }
@@ -102,14 +108,14 @@ export class DSNDataService {
       spacecraft.name = theSpacecraft.$.name;
       spacecraft.explorerName = theSpacecraft.$.explorerName;
       spacecraft.thumbnail = Boolean(theSpacecraft.$.thumbnail);
-      this.spacecrafts.push(spacecraft);
+      this._spacecrafts.push(spacecraft);
     });
     // console.log(this.spacecrafts);
   }
 
   parseStations(theData) {
     theData.dsn.station.forEach(station => {
-      const theStation = this.sites.filter(site => site.name === station.$.name);
+      const theStation = this._sites.filter(site => site.name === station.$.name);
 
       theStation[0].timeUTC = Number(station.$.timeUTC);
       theStation[0].timeZoneOffset = Number(station.$.timeZoneOffset);
@@ -119,7 +125,7 @@ export class DSNDataService {
   parseDishes(theData) {
     theData.dsn.dish.forEach(dish => {
 
-      this.sites.forEach(site => {
+      this._sites.forEach(site => {
         const dsnDish = site.dishes.filter(_theDish => _theDish.name === dish.$.name)[0];
 
         if (dsnDish !== undefined) {
@@ -134,7 +140,7 @@ export class DSNDataService {
           dsnDish.windSpeed = Number(dish.$.windSpeed);
 
           if (dish.target !== undefined) {
-            dsnDish.target = this.parseTarget(dish.target);
+            dsnDish.target = this.parseTarget(dish.target, dsnDish.name);
           }
           if (dish.downSignal !== undefined) {
             dsnDish.downSignal = this.parseDownSignal(dish.downSignal);
@@ -142,14 +148,14 @@ export class DSNDataService {
           if (dish.upSignal !== undefined) {
             dsnDish.upSignal = this.parseUpSignal(dish.upSignal);
           }
-          this.dishes.push(dsnDish);
+          this._dishes.push(dsnDish);
         }
       });
     });
     // console.log(this.dishes);
   }
 
-  parseTarget(theData): Array<Target> {
+  parseTarget(theData, theDish: string): Array<Target> {
     const targetsArray: Array<Target> = [];
 
     if (theData.length === undefined) {
@@ -160,6 +166,7 @@ export class DSNDataService {
       theTarget.name = theData.$.name;
       theTarget.rtlt = Number(theData.$.rtlt);
       theTarget.uplegRange = Number(theData.$.uplegRange);
+      theTarget.dish = theDish;
       targetsArray.push(theTarget);
     } else {
       // Multiple Targets
@@ -171,9 +178,14 @@ export class DSNDataService {
         theTarget.name = target.$.name;
         theTarget.rtlt = Number(target.$.rtlt);
         theTarget.uplegRange = Number(target.$.uplegRange);
+        theTarget.dish = theDish;
         targetsArray.push(theTarget);
       });
     }
+
+    targetsArray.forEach( theTarget => {
+      this._targets.push(theTarget);
+    });
 
     return targetsArray;
   }
@@ -229,7 +241,7 @@ export class DSNDataService {
     if (theTarget.length !== 0) {
       let spaceCraftName: String = '';
       theTarget.forEach(_target => {
-        const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => _target.name.toLowerCase() === _craft.name.toLowerCase());
+        const theCraft: Array<SpaceCraft> = this._spacecrafts.filter(_craft => _target.name.toLowerCase() === _craft.name.toLowerCase());
 
         if (theCraft !== undefined) {
           theCraft.forEach(_craft => {
@@ -248,7 +260,7 @@ export class DSNDataService {
 
   getSpaceCraftName(theTargetName: string): String {
     if (theTargetName !== null) {
-      const theCraft: Array<SpaceCraft> = this.spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
+      const theCraft: Array<SpaceCraft> = this._spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
       if (theCraft.length !== 0) {
         return theCraft[0].friendlyName;
       } else {

@@ -1,11 +1,11 @@
 export class Station {
-    public friendlyName: String; // Goldtsone
-    public name: String;  // gdscc
-    public timeUTC: Number; // 1548868060791
-    public timeZoneOffset: Number; // -28800000
-    public type?: String;
-    public latitude?: Number;
-    public longitude?: Number;
+    public friendlyName: string; // Goldtsone
+    public name: string;  // gdscc
+    public timeUTC: number; // 1548868060791
+    public timeZoneOffset: number; // -28800000
+    public type?: string;
+    public latitude?: number;
+    public longitude?: number;
 
     constructor() {
          this.friendlyName = '';

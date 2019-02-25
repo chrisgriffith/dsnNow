@@ -1,8 +1,8 @@
 export class SpaceCraft {
-    public name: String; // = "ace"
-    public explorerName: String; // = "sc_ace"
-    public friendlyName: String; // = "Advanced Composition Explorer" t
-    public thumbnail: Boolean; // = "true"
+    public name: string; // = "ace"
+    public explorerName: string; // = "sc_ace"
+    public friendlyName: string; // = "Advanced Composition Explorer" t
+    public thumbnail: boolean; // = "true"
 
     constructor() {
         this.name = '';

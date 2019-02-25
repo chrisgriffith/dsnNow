@@ -1,9 +1,10 @@
 export class Target {
-    downlegRange: Number; // "-1.0"
-    id: Number; // "99"
-    name: String; // "DUG"
-    rtlt: Number; // "-1.0"
-    uplegRange: Number; // "-1.0"
+    downlegRange: number; // "-1.0"
+    id: number; // "99"
+    name: string; // "DUG"
+    rtlt: number; // "-1.0"
+    uplegRange: number; // "-1.0"
+    dish: string;
 
     constructor() {
         this.downlegRange = 0; // "-1.0"
@@ -11,5 +12,6 @@ export class Target {
         this.name = ''; // "DUG"
         this.rtlt = 0; // "-1.0"
         this.uplegRange = 0; // "-1.0"
+        this.dish = ''; // DSN14
     }
 }

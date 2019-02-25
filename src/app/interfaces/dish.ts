@@ -3,20 +3,20 @@ import { Target } from './target';
 import { UpSignal } from './up-signal';
 
 export class Dish {
-    public azimuthAngle: Number; // "180.00"
-    public created: String; // "2019-01-30T15:56:45.045Z"
-    public elevationAngle: Number; // "89.81"
-    public isArray: Boolean; // "false"
-    public isDDOR: Boolean; // "false"
-    public isMSPA: Boolean; // "false"
-    public name: String; // "DSS24"
-    public friendlyName: String; // DSS 24
-    public updated: String; // "2019-01-30T15:56:45.045Z"
-    public windSpeed: Number; // "0.00"
+    public azimuthAngle: number; // "180.00"
+    public created: string; // "2019-01-30T15:56:45.045Z"
+    public elevationAngle: number; // "89.81"
+    public isArray: boolean; // "false"
+    public isDDOR: boolean; // "false"
+    public isMSPA: boolean; // "false"
+    public name: string; // "DSS24"
+    public friendlyName: string; // DSS 24
+    public updated: string; // "2019-01-30T15:56:45.045Z"
+    public windSpeed: number; // "0.00"
     public downSignal: Array<DownSignal>;
     public upSignal: UpSignal;
     public target: Array<Target>;
-    public type: String;
+    public type: string;
 
     constructor () {
         this.azimuthAngle = 0;

@@ -1,11 +1,11 @@
 export class UpSignal {
-    public dataRate: Number; // "2000.000000"
-    public frequency: Number; // "7158"
-    public power: Number; // "0.000000"
-    public signalType: String; // "none"
-    public signalTypeDebug: String; // "OFF 0 IDLE"
-    public spacecraft: String; // "DUG"
-    public spacecraftId: Number; // "99"
+    public dataRate: number; // "2000.000000"
+    public frequency: number; // "7158"
+    public power: number; // "0.000000"
+    public signalType: string; // "none"
+    public signalTypeDebug: string; // "OFF 0 IDLE"
+    public spacecraft: string; // "DUG"
+    public spacecraftId: number; // "99"
 
     constructor() {
         this.dataRate = 0;

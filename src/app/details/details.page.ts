@@ -13,7 +13,7 @@ import { DownSignal } from '../interfaces/down-signal';
 export class DetailsPage implements OnInit {
   private dish: Dish;
   private targets: Array<Target> = [];
-  private target: Target = { downlegRange: 0, id: 0, name: '', rtlt: 0, uplegRange: 0 };
+  private target: Target = { downlegRange: 0, id: 0, name: '', rtlt: 0, uplegRange: 0, dish: '' };
   private downSignal: DownSignal;
   private targetIndex = 0;
 
