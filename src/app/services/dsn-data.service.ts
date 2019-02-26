@@ -51,6 +51,8 @@ export class DSNDataService {
             this._targets = [];
             this.parseStations(result);
             this.parseDishes(result);
+
+            this._targets.sort((a, b) =>  this.getSpaceCraftName(a.name).localeCompare(this.getSpaceCraftName(b.name)));
             console.log('targets', this._targets);
             console.log('_dishes', this._dishes);
           }
@@ -258,7 +260,7 @@ export class DSNDataService {
     }
   }
 
-  getSpaceCraftName(theTargetName: string): String {
+  getSpaceCraftName(theTargetName: string): string {
     if (theTargetName !== null) {
       const theCraft: Array<SpaceCraft> = this._spacecrafts.filter(_craft => theTargetName.toLowerCase() === _craft.name.toLowerCase());
       if (theCraft.length !== 0) {
