@@ -38,11 +38,11 @@
 		<spacecraft name="dart" explorerName="" friendlyName="Double Asteroid Redirection Test"></spacecraft>
 		<spacecraft name="dawn" explorerName="sc_dawn" friendlyName="Dawn" thumbnail="true"></spacecraft>
 		<spacecraft name="dif" explorerName="sc_deep_impact" friendlyName="Deep Impact" thumbnail="true"></spacecraft>
-		<spacecraft name="dsco" explorerName="" friendlyName="DSCOVR" thumbnail="true"></spacecraft>
+		<spacecraft name="dsco" explorerName="sc_dscovr" friendlyName="DSCOVR" thumbnail="true"></spacecraft>
 		<spacecraft name="dsn" explorerName="" friendlyName="Testing"></spacecraft>
 		<spacecraft name="egs" explorerName="" friendlyName="EVN and Global Services"></spacecraft>
 		<spacecraft name="emm" explorerName="" friendlyName="Emirates Mars Mission"></spacecraft>
-		<spacecraft name="em-1" explorerName="" friendlyName="Exploration Mission-1" thumbnail="true"></spacecraft>
+		<spacecraft name="em-1" explorerName="sc_em1" friendlyName="Exploration Mission-1" thumbnail="true"></spacecraft>
 		<spacecraft name="em-2" explorerName="" friendlyName="Exploration Mission-2"></spacecraft>
 		<spacecraft name="em-3" explorerName="" friendlyName="Exploration Mission-3"></spacecraft>
 		<spacecraft name="em-4" explorerName="" friendlyName="Exploration Mission-4"></spacecraft>
@@ -147,8 +147,8 @@
 		<spacecraft name="tdr8" explorerName="sc_tdrs_8" friendlyName="TDRS 8" thumbnail="true"></spacecraft>
 		<spacecraft name="tdr9" explorerName="sc_tdrs_9" friendlyName="TDRS 9" thumbnail="true"></spacecraft>
 		<spacecraft name="terr" explorerName="sc_terra" friendlyName="TERRA" thumbnail="true"></spacecraft>
-		<spacecraft name="tess" explorerName="" friendlyName="Transiting Exoplanet Survey Satellite" thumbnail="true"></spacecraft>
-		<spacecraft name="tgo" explorerName="" friendlyName="Trace Gas Orbiter" thumbnail="true"></spacecraft>
+		<spacecraft name="tess" explorerName="sc_transiting_exoplanet_survey_satellite" friendlyName="Transiting Exoplanet Survey Satellite" thumbnail="true"></spacecraft>
+		<spacecraft name="tgo" explorerName="trace_gas_orbiter" friendlyName="Trace Gas Orbiter" thumbnail="true"></spacecraft>
 		<spacecraft name="thb" explorerName="sc_themis_b" friendlyName="THEMIS B" thumbnail="true"></spacecraft>
 		<spacecraft name="thc" explorerName="sc_themis_c" friendlyName="THEMIS C" thumbnail="true"></spacecraft>
 		<spacecraft name="ulys" explorerName="sc_ulysses" friendlyName="Ulysses"></spacecraft>
